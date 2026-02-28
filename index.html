@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Simple Window Tint Simulator</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+html,body{
+  margin:0;
+  padding:0;
+  background:#111;
+  color:#fff;
+  font-family:Arial,sans-serif;
+  text-align:center;
+}
+*{box-sizing:border-box}
+
+.tabs{margin:20px 0}
+.tab{
+  display:inline-block;
+  padding:8px 16px;
+  margin:0 5px;
+  border:1px solid #fff;
+  border-radius:4px;
+  cursor:pointer;
+}
+.tab.active{background:#fff;color:#000}
+
+.car-container{position:relative;max-width:800px;margin:auto}
+.car-container img{width:100%;display:block}
+
+.overlay{
+  position:absolute;
+  top:0;left:0;
+  width:100%;
+  pointer-events:none;
+  opacity:0;
+  transition:.3s;
+}
+
+.tint-section{max-width:900px;margin:30px auto}
+select{
+  width:100%;
+  padding:8px;
+  background:#222;
+  color:#fff;
+  border:1px solid #fff;
+  margin-bottom:10px;
+}
+
+label{display:block;margin-top:15px}
+
+button{
+  margin:4px;
+  padding:6px 12px;
+  border:1px solid #fff;
+  background:transparent;
+  color:#fff;
+  border-radius:4px;
+  cursor:pointer;
+}
+button.selected{background:#fff;color:#000}
+
+.shade-set{display:none}
+.vehicle{display:none}
+.vehicle.active{display:block}
+</style>
+</head>
+<body>
+
+<div class="tabs">
+  <span class="tab active" onclick="switchVehicle('sedan')">Sedan</span>
+  <span class="tab" onclick="switchVehicle('suv')">SUV</span>
+  <span class="tab" onclick="switchVehicle('truck')">Truck</span>
+</div>
+
+<div class="car-container">
+  <div id="sedan" class="vehicle active">
+    <img src="https://i.imgur.com/ccl61Ii.png">
+    <img id="sedanWindshield" class="overlay" src="https://i.imgur.com/uX8NxVu.png">
+    <img id="sedanFront" class="overlay" src="https://i.imgur.com/yTeHgPn.png">
+    <img id="sedanRear" class="overlay" src="https://i.imgur.com/8aYnY7f.png">
+  </div>
+
+  <div id="suv" class="vehicle">
+    <img src="https://i.imgur.com/wjMOEta.png">
+    <img id="suvWindshield" class="overlay" src="https://i.imgur.com/mVYTyfC.png">
+    <img id="suvFront" class="overlay" src="https://i.imgur.com/rFsAqqe.png">
+    <img id="suvRear" class="overlay" src="https://i.imgur.com/Bhlcjop.png">
+  </div>
+
+  <div id="truck" class="vehicle">
+    <img src="https://i.imgur.com/MpcdlZu.png">
+    <img id="truckWindshield" class="overlay" src="https://i.imgur.com/H3l1yYo.png">
+    <img id="truckFront" class="overlay" src="https://i.imgur.com/8wMNPr9.png">
+    <img id="truckRear" class="overlay" src="https://i.imgur.com/WQct3DD.png">
+  </div>
+</div>
+
+<div class="tint-section">
+
+<select id="packageSelect" onchange="selectPackage(this)">
+  <option value="">Choose a package</option>
+  <option value="bronze" disabled>Bronze (Unavailable)</option>
+  <option value="silver">Silver</option>
+  <option value="gold" selected>Gold</option>
+  <option value="platinum">Platinum</option>
+</select>
+
+<div id="windshieldButtons">
+  <label>Windshield</label>
+  <button onclick="setTint('Windshield',0.2,this)">80%</button>
+  <button onclick="setTint('Windshield',0.3,this)">70%</button>
+  <button onclick="setTint('Windshield',0.5,this)">50%</button>
+</div>
+
+<label>Front Window</label>
+<div id="silverFront" class="shade-set">
+  <button onclick="setTint('Front',0.65,this)">35%</button>
+  <button onclick="setTint('Front',0.8,this)">20%</button>
+  <button onclick="setTint('Front',0.95,this)">5%</button>
+</div>
+
+<div id="goldFront" class="shade-set">
+  <button onclick="setTint('Front',0.2,this)">80%</button>
+  <button onclick="setTint('Front',0.3,this)">70%</button>
+  <button onclick="setTint('Front',0.5,this)">50%</button>
+  <button onclick="setTint('Front',0.65,this)">35%</button>
+  <button onclick="setTint('Front',0.75,this)">25%</button>
+  <button onclick="setTint('Front',0.8,this)">20%</button>
+  <button onclick="setTint('Front',0.85,this)">15%</button>
+  <button onclick="setTint('Front',0.95,this)">5%</button>
+</div>
+
+<label>Rear Window</label>
+<div id="silverRear" class="shade-set">
+  <button onclick="setTint('Rear',0.65,this)">35%</button>
+  <button onclick="setTint('Rear',0.8,this)">20%</button>
+  <button onclick="setTint('Rear',0.95,this)">5%</button>
+</div>
+
+<div id="goldRear" class="shade-set">
+  <button onclick="setTint('Rear',0.2,this)">80%</button>
+  <button onclick="setTint('Rear',0.3,this)">70%</button>
+  <button onclick="setTint('Rear',0.5,this)">50%</button>
+  <button onclick="setTint('Rear',0.65,this)">35%</button>
+  <button onclick="setTint('Rear',0.75,this)">25%</button>
+  <button onclick="setTint('Rear',0.8,this)">20%</button>
+  <button onclick="setTint('Rear',0.85,this)">15%</button>
+  <button onclick="setTint('Rear',0.95,this)">5%</button>
+</div>
+
+</div>
+
+<script>
+let currentVehicle = 'sedan';
+
+function switchVehicle(v){
+  currentVehicle = v;
+  document.querySelectorAll('.vehicle').forEach(x=>x.classList.remove('active'));
+  document.getElementById(v).classList.add('active');
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab')[['sedan','suv','truck'].indexOf(v)].classList.add('active');
+  document.querySelectorAll('.overlay').forEach(o=>o.style.opacity=0);
+}
+
+function setTint(type,opacity,btn){
+  const map={
+    sedan:{Windshield:'sedanWindshield',Front:'sedanFront',Rear:'sedanRear'},
+    suv:{Windshield:'suvWindshield',Front:'suvFront',Rear:'suvRear'},
+    truck:{Windshield:'truckWindshield',Front:'truckFront',Rear:'truckRear'}
+  };
+  document.getElementById(map[currentVehicle][type]).style.opacity = opacity;
+  document.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+  btn.classList.add('selected');
+}
+
+function selectPackage(sel){
+  const p = sel.value;
+  document.querySelectorAll('.shade-set').forEach(s=>s.style.display='none');
+  document.querySelectorAll('button').forEach(b=>b.classList.remove('selected'));
+
+  if(!p || p === 'bronze') return;
+
+  // Platinum uses Gold shade sets
+  const pkg = (p === 'platinum') ? 'gold' : p;
+
+  document.getElementById(pkg + 'Front').style.display = 'block';
+  document.getElementById(pkg + 'Rear').style.display = 'block';
+}
+
+document.addEventListener('DOMContentLoaded',()=>{
+  const s = document.getElementById('packageSelect');
+  s.value = 'gold';
+  selectPackage(s);
+});
+</script>
+
+</body>
+</html>
